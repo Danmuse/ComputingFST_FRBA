@@ -1,0 +1,11 @@
+git init //Depends if you've used this command on the master file before
+git add .
+git commit -m "first commit"
+git branch -M master //Only first time to load the files 
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+----------------------------------------
+git pull origin master --rebase //This command is very important to upload the token permissions, and you have to run it at least one time 
+----------------------------------------
+git push -u origin master //"-u" isn't neccesary when you've to push the files on a created branch
+
+git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
