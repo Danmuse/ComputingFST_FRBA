@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+que sucede cuando asignamos un caracter a una variable char? que dato se guarda en la variable?
+ *  quien realiza esa conversion?/* Que sucede cuando asugnamos un caracter a una variable char,
+ *
+ *
+ */
+
+int main(void) {
+int diference = 0;
+char letra_01 = 'a';
+char letra_02 = 97; // No es posible almacenar numeros superiores a su tamaño (1 byte - 255)
+// Comparamos los dos caracteres para saber si son iguales
+// Utilizamos el "operador arimético resta"
+diference = letra_01 - letra_02;
+printf("La diferencia es %d\n", diference);
+printf("int: %ld, float: %ld, double: %ld, char: %ld\n", sizeof(int), sizeof(float), sizeof(double), sizeof(char)); 
+return 0;
+}
