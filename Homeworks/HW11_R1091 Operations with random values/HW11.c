@@ -20,21 +20,18 @@ int main (void) {
 		acc += random[i];
 		if (random[i] > max_value) max_value = random[i];
 		if (random[i] < min_value) min_value = random[i];
-	}
-
-	for (i = 0; i < MAX; i++) {
 		for (j = 0; j < MAX; j++) {
-			if (i != j) {
-				if (random[i] == random[j]) idem_counter++;
-			} else {
+			if (i != j) { if (random[i] == random[j]) idem_counter++; }
+			else {
 				if (idem_counter > max_count) {
-					max_count = idem_counter - 1;
+					max_count = idem_counter;
 					idem_value = random[j];
 				}
 				idem_counter = 1;
 			}
 		}
 	}
+	
 	average = (float) acc / MAX;
 	printf("\nDe los 100 valores aleatorios entre 10 y 20, se observa:\n");
 	printf("Promedio: %.2f\nValor maximo: %d\nValor minimo: %d\n", average, max_value, min_value);
