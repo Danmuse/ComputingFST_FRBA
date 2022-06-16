@@ -9,7 +9,7 @@
 #define SIZE 10
 #define MAX 5
 
-typedef u_int8_t uint8_t; // sizeof(uint8_t) = 1 Byte
+typedef __UINT8_TYPE__ uint8_t; // sizeof(uint8_t) = 1 Byte
 
 int8_t array_find(uint8_t *, int, uint8_t);
 
@@ -33,9 +33,20 @@ int8_t array_find(uint8_t *array, int size, uint8_t index) {
 	uint8_t i;
 	int8_t output = 0;
 	for (i = 0; i < size; i++) {
-		if (array[i] == index) output = i;
+		if (array[i] == index) output = i; // Devolvera el ultimo indice coincidente
 		else if (output == 0) output = -1;
 	} 
+	// Contempla cuando el valor dado sea igual al primer indice del array por unica vez
 	if (array[0] == index && output == -1) output = 0;
+	
+	/****************** Otra alternativa ******************
+	
+	for (i = 0; i < size; i++) {
+		if (array[i] == index) { output = i; break; } // Devolvera el primer indice coincidente
+		else output = -1;
+	} 
+	
+	******************************************************/
+	
 	return output;
 }
