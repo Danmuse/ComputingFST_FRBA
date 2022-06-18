@@ -9,11 +9,11 @@
 #define SIZE 10
 #define MAX 5
 
-typedef __UINT8_TYPE__ uint8_t; // sizeof(uint8_t) = 1 Byte
+typedef __UINT8_TYPE__ uint8_t; // sizeof(uint8_t) = 1 Byte on Ubuntu
 
 int8_t array_find(uint8_t *, int, uint8_t);
 
-int main (void) {
+int main(void) {
 	uint8_t i, value, random[SIZE];
 	int8_t input;
 	srand(getpid());
@@ -26,7 +26,7 @@ int main (void) {
 	input = array_find(random, SIZE, value);
 	input == -1 ? printf("\nNo se han encontrado coincidencias...\n\n") :
 	printf("\nEn el siguiente indice se encuentra el valor dado: \nrandom[%d]\n\n", input);
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 int8_t array_find(uint8_t *array, int size, uint8_t index) {
