@@ -24,10 +24,22 @@ void load_arr(int a[], int max_size) {
 	printf("\nIngrese por el teclado los valores para cada elemento. Envie \"0\" para salir\n");
 	for(i = 0; i < max_size; i++) {
 		printf("arr[%li] = ", i);
-		scanf("%d", a);
-		if(*a == 0) break;
-		else if(*a > 1000 || *a < -1000) break;
+		scanf("%d", &a[i]); // Equal to "scanf("%d", a + i);"
+		if(a[i] == 0) break;
+		else if(a[i] > 1000 || a[i] < -1000) break;
 	}
+}
+
+void size_arr(int a[], int max_size) {
+	size_t i;
+	for(i = 0; i < max_size; i++) if(a[i] == 0) break;
+	printf("\nEl tamanio del array es: %ld Elemento%c\n", i, i == 1 ? 0 : 115);
+}
+
+int has_value(int a, int b[]) {
+	int debug = 0;
+	
+	return debug;
 }
 
 void print_arr(int a[]) {

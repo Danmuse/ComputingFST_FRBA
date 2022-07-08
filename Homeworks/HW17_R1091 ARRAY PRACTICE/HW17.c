@@ -19,6 +19,26 @@ int main(void) {
 	int arr[SIZE];
 	init_arr(arr, SIZE);
 	load_arr(arr, SIZE);
+	size_arr(arr, SIZE);
 	print_arr(arr);
-	return 0;
+	while(1) {
+		short unsigned int input;
+		printf("\nSeleccione alguna opcion...\n");
+		printf("[0] - Finalizar\n");
+		printf("[1] - Has value (Buscar un valor en el array)\n");
+		printf("[2] - Get value (Insertar un elemento al final del array)\n");
+		printf("[3] - Union arrays (Concatenar tres arrays en uno)\n");
+		printf("\nDefina su opcion: ");
+		scanf("%hu", &input);
+		if(input >= 0 && input <= 3) {
+			switch(input) {
+				case 0: 
+					return 0;
+				break;
+				case 1:
+					
+				break;
+			}
+		} else printf("\nOpcion invalida\n");
+	}
 }
