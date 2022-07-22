@@ -12,33 +12,56 @@
  ****************************************************************************************************/
 
 #include <stdio.h>
-#include "myString.h"
+#include "myArray.h"
 #define SIZE 10
 
 int main(void) {
-	int arr[SIZE];
+	int arr[SIZE], arr_2[SIZE], arr_3[SIZE], input_value;
+	short int option, output_stdin = 0, out_function;
 	init_arr(arr, SIZE);
 	load_arr(arr, SIZE);
 	size_arr(arr, SIZE);
 	print_arr(arr);
+	printf("\n\nSeleccione alguna opcion...\n");
+	printf("[0] - Finalizar\n");
+	printf("[1] - Has value (Buscar un valor en el array)\n");
+	printf("[2] - Get value (Insertar un elemento al final del array)\n");
+	printf("[3] - Union arrays (Concatenar dos arrays en uno)");
 	while(1) {
-		short unsigned int input;
-		printf("\nSeleccione alguna opcion...\n");
-		printf("[0] - Finalizar\n");
-		printf("[1] - Has value (Buscar un valor en el array)\n");
-		printf("[2] - Get value (Insertar un elemento al final del array)\n");
-		printf("[3] - Union arrays (Concatenar tres arrays en uno)\n");
-		printf("\nDefina su opcion: ");
-		scanf("%hu", &input);
-		if(input >= 0 && input <= 3) {
-			switch(input) {
+		printf("\n\nDefina su opcion: ");
+		output_stdin = scanf("%hd", &option);
+		if(output_stdin != 1) option = 0; // Evita que sean ingresados los caracteres no alfanumericos
+		if(option >= 0 && option <= 3) {
+			switch(option) {
 				case 0: 
 					return 0;
 				break;
 				case 1:
-					
+					printf("\nRecibido, ingrese un valor: ");
+					scanf("%d", &input_value);
+					out_function = has_value(input_value, arr);
+					if(out_function >= 0) printf("El elemento con dicho valor se encuentra en arr[%hd]\n", out_function);
+					else printf("No se encuentra un elemento con dicho valor\n");
+				break;
+				case 2: 
+					printf("\nRecibido, ingrese un valor: ");
+					scanf("%d", &input_value);
+					out_function = get_value(input_value, arr, SIZE);
+					if(out_function == 0) print_arr(arr);
+					else printf("Lo sentimos, el array esta completo\n");
+				break;
+				case 3: 
+					printf("\nRecibido, inserte valores en el segundo array...");
+					init_arr(arr_2, SIZE);
+					load_arr(arr_2, SIZE);
+					printf("\nInserte valores en el tercer array...");
+					init_arr(arr_3, SIZE);
+					load_arr(arr_3, SIZE);
+					out_function = union_arrs(arr, arr_2, arr_3, SIZE);
+					if(out_function == 0) print_arr(arr);
+					else printf("\nLo sentimos, el array esta completo");
 				break;
 			}
-		} else printf("\nOpcion invalida\n");
+		} else printf("Opcion invalida");
 	}
 }

@@ -12,7 +12,7 @@
  ****************************************************************************************************/
  
 #include <stdio.h>
-#include "myString.h"
+#include "myArray.h"
 
 void init_arr(int a[], int max_size) {
 	size_t i;
@@ -22,12 +22,14 @@ void init_arr(int a[], int max_size) {
 void load_arr(int a[], int max_size) {
 	size_t i;
 	printf("\nIngrese por el teclado los valores para cada elemento. Envie \"0\" para salir\n");
-	for(i = 0; i < max_size; i++) {
-		printf("arr[%li] = ", i);
-		scanf("%d", &a[i]); // Equal to "scanf("%d", a + i);"
-		if(a[i] == 0) break;
-		else if(a[i] > 1000 || a[i] < -1000) break;
-	}
+	while(1) {
+		for(i = 0; i < max_size; i++) {
+			printf("arr[%li] = ", i);
+			scanf("%d", &a[i]); // Equal to "scanf("%d", a + i);"
+			if(a[i] == 0) break;
+			else if(a[i] > 1000 || a[i] < -1000) break;
+		} if(*a != 0) break; // Se rompe al colocar una letra
+	} 
 }
 
 void size_arr(int a[], int max_size) {
@@ -36,10 +38,38 @@ void size_arr(int a[], int max_size) {
 	printf("\nEl tamanio del array es: %ld Elemento%c\n", i, i == 1 ? 0 : 115);
 }
 
-int has_value(int a, int b[]) {
-	int debug = 0;
-	
-	return debug;
+short int has_value(int a, int b[]) {
+	size_t i;
+	short int pos = -1;
+	for(i = 0; *(b + i) != 0; i++) 
+		if(b[i] == a) pos = i;
+	return pos;
+}
+
+short int get_value(int a, int b[], int max_size) {
+	size_t i;
+	short int prompt = 0;
+	for(i = 0; i < max_size; i++) {
+		if(b[i] == 0) {
+			b[i] = a;
+			break;
+		} else if(i == max_size - 1 && b[i] != 0) prompt = 1;
+	}
+	return prompt;
+}
+
+short int union_arrs(int a[], int b[], int c[], int max_size) {
+	size_t i, arr_len = 0, arr2_len = 0;
+	short int prompt = 0;
+	for(i = 0; *(a + i) != 0; i++) arr_len++;
+	for(i = 0; *(b + i) != 0; i++) arr2_len++;
+	if(arr_len < max_size) {
+		for(i = 0; arr_len + i < max_size; i++) {
+			if(*(b + i) != 0) a[arr_len + i] = b[i];
+			else a[arr_len + i] = c[i - arr2_len];
+		}
+	} else prompt = 1;
+	return prompt;
 }
 
 void print_arr(int a[]) {

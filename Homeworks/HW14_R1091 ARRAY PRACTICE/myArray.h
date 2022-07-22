@@ -14,7 +14,7 @@
 void init_arr(int a[], int max_size);
 void load_arr(int a[], int max_size);
 void size_arr(int a[], int max_size);
-int has_value(int a, int b[]);
-int get_value(int a, int b[], int max_size);
+short int has_value(int a, int b[]);
+short int get_value(int a, int b[], int max_size);
 void print_arr(int a[]);
-int union_arrs(int a[], int b[], int c[], int max_size);
+short int union_arrs(int a[], int b[], int c[], int max_size);
