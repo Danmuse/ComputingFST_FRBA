@@ -30,7 +30,7 @@ int main(void) {
 	while(1) {
 		printf("\n\nDefina su opcion: ");
 		output_stdin = scanf("%hd", &option);
-		if(output_stdin != 1) option = 0; // Evita que sean ingresados los caracteres no alfanumericos
+		if(output_stdin != 1) option = 0; // Evita que sean ingresados los caracteres no numericos
 		if(option >= 0 && option <= 3) {
 			switch(option) {
 				case 0: 
