@@ -32,20 +32,23 @@ char *my_strcat(char *src, char *argv[], int argc) {
 
 int scroll_letters(char *src, char *dest) {
 	size_t pos = 0;
-	int random = rand() % 25;
-	int prompt = is_encrypt(src);
+	char str_swap[SIZE]; // Cadena de intercambio para encriptar los numeros
+	int random = rand() % 25; // Almacena el valor del numero random
+	int prompt = is_encrypt(src); // Verifica que el texto ingresado sea encriptable
 	if(prompt == 0) {
 		while(*src != '\0') {
 			if(*src > 64 && *src < 91) {
 				if(*src + random > 90) dest[pos] = *src + random - 26;
 				else dest[pos] = *src + random;
-			}
-			// else if((*src > 47 && *src < 58) || *src == 32) dest[pos] = *src;
-			else if(*src == 32) dest[pos] = *src;
+			} else if(*src > 47 && *src < 58) {
+				encrypt_numbers(src, str_swap);
+				dest[pos] = *str_swap;
+			} else if(*src == 32) dest[pos] = *src;
 			pos++;
 			src++;
 		}
-	} else random = -1;
+		dest[pos] = '\0';
+	} else random = prompt;
 	return random;
 }
 
@@ -55,7 +58,21 @@ int scroll_letters(char *src, char *dest) {
  **************************************************************************************************/
 
 void decrypt_letters(char *src, char *dest, int random) {
-	
+	size_t pos = 0;
+	char str_swap[SIZE]; // Cadena de intercambio para encriptar los numeros
+	while(*src != '\0') {
+		if(*src > 64 && *src < 91) {
+			if(*src - random < 65) dest[pos] = *src - random + 26;
+			else dest[pos] = *src - random;
+		} else if(*src == 36 || *src == 37 || *src == 38 || *src == 42 || *src == 64 || *src == 33 || *src == 43 || *src == 61 || *src == '8' || *src == '9') { 
+			// Revisar los caracteres ASCCI
+			decrypt_numbers(src, str_swap);
+			dest[pos] = *str_swap;
+		} else if(*src == 32) dest[pos] = *src;
+		pos++;
+		src++;
+	}
+	dest[pos] = '\0';
 }
 
 /**************************************************************************
@@ -67,21 +84,16 @@ void encrypt_numbers(char *src, char *dest) {
 	size_t pos = 0;
 	while(*src != '\0') {
 		switch(*src) {
-			case '0': dest[pos] = '$'; break;
-			case '1': dest[pos] = '%'; break;
-			case '2': dest[pos] = '&'; break;
-			case '3': dest[pos] = '*'; break;
-			case '4': dest[pos] = '@'; break;
-			case '5': dest[pos] = '!'; break;
-			case '6': dest[pos] = '+'; break;
-			case '7': dest[pos] = '='; break;
-			case '8': dest[pos] = '8'; break;
-			case '9': dest[pos] = '9'; break;
-			case ' ': dest[pos] = ' '; break;
+			case '0': dest[pos] = '$'; break; // ASCCI: 36
+			case '1': dest[pos] = '%'; break; // ASCCI: 37
+			case '2': dest[pos] = '&'; break; // ASCCI: 38
+			case '3': dest[pos] = '*'; break; // ASCCI: 42
+			case '4': dest[pos] = '@'; break; // ASCCI: 64
+			case '5': dest[pos] = '!'; break; // ASCCI: 33
+			case '6': dest[pos] = '+'; break; // ASCCI: 43
+			case '7': dest[pos] = '='; break; // ASCCI: 61
 			default: dest[pos] = *src; break;
 		}
-		// else if((*src > 64 && *src < 91) || *src == 32) dest[pos] = *src;
-		// if(*src == 32) dest[pos] = *src;
 		pos++;
 		src++;
 	}
@@ -92,7 +104,22 @@ void encrypt_numbers(char *src, char *dest) {
  *************************************************************/
 
 void decrypt_numbers(char *src, char *dest) {
-	
+	size_t pos = 0;
+	while(*src != '\0') {
+		switch(*src) {
+			case '$': dest[pos] = '0'; break;
+			case '%': dest[pos] = '1'; break;
+			case '&': dest[pos] = '2'; break;
+			case '*': dest[pos] = '3'; break;
+			case '@': dest[pos] = '4'; break;
+			case '!': dest[pos] = '5'; break;
+			case '+': dest[pos] = '6'; break;
+			case '=': dest[pos] = '7'; break;
+			default: dest[pos] = *src; break;
+		}
+		pos++;
+		src++;
+	}
 }
 
 /************************************************************************************************
@@ -106,7 +133,7 @@ int is_encrypt(char *src) {
 		if((*src > 64 && *src < 91) || (*src > 96 && *src < 123) || (*src > 47 && *src < 58) || *src == 32) {
 			if(*src > 96 && *src < 123) *src = *src - 32; // *src = *src - ('a' - 'A');
 		} else {
-			buffer = 1;
+			buffer = -1;
 			break;	
 		}
 		src++;

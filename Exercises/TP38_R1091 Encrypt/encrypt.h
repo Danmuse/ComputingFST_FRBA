@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
+#define SIZE 30
 
 typedef __UINT8_TYPE__ uint8_t;
 
