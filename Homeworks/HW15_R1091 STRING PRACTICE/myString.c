@@ -89,29 +89,26 @@ uint8_t alphanumeric(char *str) {
 	uint8_t status = 0, st_alpha = 0, st_numeric = 0;
 	while(*str != '\0') {
 		if(*str > 32) {
-			if(*str < 48 && *str > 57) st_alpha = 1;
-			else st_numeric = 1;
-		}
-		str++;
-	}
-	if(st_alpha == 1 && st_numeric == 1) status = 0;
-	else if(st_alpha == 1 && st_numeric == 0) status = 1;
-	else if(st_alpha == 0 && st_numeric == 1) status = 2;
-	printf("%u\t%u\t%u\n", status, st_alpha, st_numeric);
-	return status;
-}
-
-uint8_t numeric(char *str) {
-	uint8_t status = 0, st_alpha = 0, st_numeric = 0;
-	while(*str != '\0') {
-		if(*str > 32) {
-			if(*str < 48 && *str > 57) st_alpha = 1;
-			else st_numeric = 1;
+			if(*str > 47 && *str < 58) st_numeric = 1;
+			else st_alpha = 1;
 		}
 		str++;
 	}
 	if(st_alpha == 1 && st_numeric == 0) status = 1;
 	else if(st_alpha == 0 && st_numeric == 1) status = 2;
-	printf("%u\t%u\t%u\n", status, st_alpha, st_numeric);
+	return status;
+}
+
+uint8_t numeric(char *str) {
+	uint8_t status = 1, st_alpha = 0, st_numeric = 0;
+	while(*str != '\0') {
+		if(*str > 32) {
+			if(*str > 47 && *str < 58) st_numeric = 1;
+			else st_alpha = 1;
+		}
+		str++;
+	}
+	if(st_alpha == 0 && st_numeric == 1) status = 0;
+	else if(st_alpha == 1 && st_numeric == 0) status = 2;
 	return status;
 }
