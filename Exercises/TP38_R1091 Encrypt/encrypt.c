@@ -1,5 +1,10 @@
 #include "encrypt.h"
 
+typedef enum {
+	DISABLE = 0,
+	ENABLE = 1
+} STATUS;
+
 /***************************************************************************
  * Funcion para concatenar los argumentos dados en formato de cadena unica *
  ***************************************************************************/
@@ -16,7 +21,7 @@ char *my_strcat(char *src, char *argv[], int argc) {
 		if(i < cant - 1) {
 			src[count] = ' ';
 			count++;
-		} 
+		}
 	}
 	src[count] = '\0';
 	return src;
@@ -32,20 +37,43 @@ char *my_strcat(char *src, char *argv[], int argc) {
 
 int scroll_letters(char *src, char *dest) {
 	size_t pos = 0;
-	char str_swap[SIZE]; // Cadena de intercambio para encriptar los numeros
-	int random = rand() % 25; // Almacena el valor del numero random
-	int prompt = is_encrypt(src); // Verifica que el texto ingresado sea encriptable
+	char str_swap[SIZE];		// Cadena de intercambio para encriptar los numeros
+	int random = rand() % 25;	// Almacena el valor del numero random
+	int prompt = is_encrypt(src);	// Verifica que el texto ingresado sea encriptable
+	STATUS st_number;		// Es un estado o "bandera" que define la ocurrencia de un numero
 	if(prompt == 0) {
 		while(*src != '\0') {
 			if(*src > 64 && *src < 91) {
+				if(st_number) {
+					st_number = DISABLE;
+					dest[pos] = '#';
+					pos++;
+				}
 				if(*src + random > 90) dest[pos] = *src + random - 26;
 				else dest[pos] = *src + random;
 			} else if(*src > 47 && *src < 58) {
+				if(!st_number) {
+					st_number = ENABLE;
+					dest[pos] = '#';
+					pos++;
+				}
 				encrypt_numbers(src, str_swap);
 				dest[pos] = *str_swap;
-			} else if(*src == 32) dest[pos] = *src;
+			} else if(*src == 32) {
+				if(st_number) {
+					st_number = DISABLE;
+					dest[pos] = '#';
+					pos++;
+				}
+				dest[pos] = *src;
+			}
 			pos++;
 			src++;
+		}
+		if(st_number) {
+			st_number = DISABLE;
+			dest[pos] = '#';
+			pos++;
 		}
 		dest[pos] = '\0';
 	} else random = prompt;
@@ -64,11 +92,12 @@ void decrypt_letters(char *src, char *dest, int random) {
 		if(*src > 64 && *src < 91) {
 			if(*src - random < 65) dest[pos] = *src - random + 26;
 			else dest[pos] = *src - random;
-		} else if(*src == 36 || *src == 37 || *src == 38 || *src == 42 || *src == 64 || *src == 33 || *src == 43 || *src == 61 || *src == '8' || *src == '9') { 
+		} else if(*src == 36 || *src == 37 || *src == 38 || *src == 42 || *src == 64 || *src == 33 || *src == 43 || *src == 61 || *src == '8' || *src == '9') {
 			// Revisar los caracteres ASCCI
 			decrypt_numbers(src, str_swap);
 			dest[pos] = *str_swap;
 		} else if(*src == 32) dest[pos] = *src;
+		else if(*src == '#') pos--;
 		pos++;
 		src++;
 	}

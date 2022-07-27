@@ -2,6 +2,7 @@
  * Pacial de 2020 - Informatica 1 *
  **********************************/
 
+#include <stdio.h>
 #include "encrypt.h"
 
 // argc --> numero de palabras (incluido el nombre del programa)
