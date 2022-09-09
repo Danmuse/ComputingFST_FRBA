@@ -12,9 +12,9 @@
 #define SIZE 20
 
 typedef enum {
-	CONTINUE = 0,
-	EXIT = 1
-} Exit_t;
+	FALSE = 0,
+	TRUE = 1
+} myBoolean_t;
 
 typedef struct {
 	char name[SIZE];
@@ -28,15 +28,17 @@ int main(void) {
 	size_t i, j;
 	int accumulator = 0;
 	float average;
-	Exit_t exit;
+	myBoolean_t exit = FALSE, sameName = FALSE;
 	Material_t inventory[MAX_ITEMS];
 	for (i = 0; i < MAX_ITEMS; i++) {
 		if (exit) break;
+		sameName = FALSE;
 		printf("\nIngrese el nombre del material [%ld]: ", i);
 		scanf("%s", inventory[i].name);
 		str_upperCase(inventory[i].name);
 		// NOTE: 'A' = 65 (ASCCI)
 		if (*inventory[i].name < 65) break; // Avoid continuing if the first character isn't a letter or symbol
+		
 		for (j = 0; j <= i; j++) {
 			// printf("%s[%ld] - %s[%ld]\n", inventory[i].name, i, inventory[j].name, j);
 			// Enters if the material currently entered is equal to one of the above
@@ -44,31 +46,30 @@ int main(void) {
 				printf("Modifique el stock del material [%ld]: ", j);
 				scanf("%d", &inventory[j].stock);
 				*inventory[i].name = '\0';
-				i--;
+				sameName = TRUE;
 				// Avoid continuing if the stock entered isn't a number or equal to zero
-				if (!inventory[j].stock) exit = EXIT;
+				if (!inventory[j].stock) exit = TRUE;
 				break;
-			} else {
-				printf("Ingrese el stock del material [%ld]: ", i);
-				scanf("%d", &inventory[i].stock);
-				// Avoid continuing if the stock entered isn't a number or equal to zero
-				if (!inventory[i].stock) {
-					*inventory[i].name = '\0';
-					exit = EXIT;
-				}
-				break;
-			}
+			} 
 		}
+		
+		if (!sameName) {
+			printf("Ingrese el stock del material [%ld]: ", i);
+			scanf("%d", &inventory[i].stock);
+			// Avoid continuing if the stock entered isn't a number or equal to zero
+			if (!inventory[i].stock) {	
+				*inventory[i].name = '\0';
+				exit = TRUE;
+			}
+		} else i--;
 	}
 	
 	for (i = 0; *inventory[i].name > 64 && i < MAX_ITEMS; i++) accumulator += inventory[i].stock;
 	printf("Total acumulado: %d items\n", accumulator);
-	// average = (float)(accumulator / (int) i);
-	// printf("Stock promedio: %.0f items\n", average);
-	
-	average = averageStock(inventory); // Comment it to present...
-	// printf("Stock promedio: %.0f items\n", average);
-	// for (i = 0; *inventory[i].name > 64 && i < MAX_ITEMS; i++) if (inventory[i].stock < average) printf("\n%s - %d\n", inventory[i].name, inventory[i].stock); // PARA LISTAR INFERIORES AL STOCK
+	average = averageStock(inventory);
+	printf("Stock promedio: %.0f items\n", average);
+	// List out of stock items
+	for (i = 0; *inventory[i].name > 64 && i < MAX_ITEMS; i++) if (inventory[i].stock <= average) printf("\n%s - %d\n", inventory[i].name, inventory[i].stock);
 	return 0;
 }
 
@@ -84,6 +85,9 @@ float averageStock(Material_t aux[]) {
 	int accumulator = 0;
 	float output;
 	for (i = 0; *aux[i].name > 64 && i < MAX_ITEMS; i++) accumulator += aux[i].stock;
+	output = (float)(accumulator / (int)i);
+	return output;
+}
 	output = (float)(accumulator / (int) i);
 	return output;
 }
