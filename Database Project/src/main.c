@@ -1,22 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "my_string.h"
-#define SIZE 50
+#include <string.h> // memset
 
-typedef __UINT8_TYPE__ uint8_t;
-typedef struct {
-	char name[SIZE];
-	char surname[SIZE];
-} user_t
+#include "database.h"
 
-int main(void) {
-	uint8_t output = 0
-	char result_str;
-	user_t user = {"Daniel", "Di Modica"};
-	output = my_strlen(user.name);
-	// my_strcpy(result_str, user.name);
-	my_strcat(result_str, user.name);
-	printf("El nombre posee %d caracteres", output);
-	puts(result_str);
-	return 0;
+int main()
+{
+
+    TASK mem_database[DATABASE_SIZE];
+    TASK aux = {40, "task 40", 4};
+    int idx;
+
+    // printf("sizeof(TASK)=%d\n", sizeof(TASK));
+    // printf("sizeof(mem_database)=%d\n", sizeof(mem_database));
+
+    // init database
+    memset(mem_database, 0, sizeof(mem_database));
+
+    // create fake database
+    fake_database(mem_database);
+
+    // add element
+    idx = task_create(mem_database, aux);
+    printf("Add element at position...%d\n", idx);
+
+    // list database
+    task_list(mem_database);
+
+    // get task
+    aux = task_read_by_id(mem_database, 40);
+    task_show(aux);
+
+    return 0;
 }
