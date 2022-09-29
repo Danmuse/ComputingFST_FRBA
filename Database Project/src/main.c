@@ -4,12 +4,10 @@
 
 #include "database.h"
 
-int main()
-{
-
+int main(void) {
     TASK mem_database[DATABASE_SIZE];
     TASK aux = {40, "task 40", 4};
-    int idx;
+    int index;
 
     // printf("sizeof(TASK)=%d\n", sizeof(TASK));
     // printf("sizeof(mem_database)=%d\n", sizeof(mem_database));
@@ -21,7 +19,7 @@ int main()
     fake_database(mem_database);
 
     // add element
-    idx = task_create(mem_database, aux);
+    index = task_create(mem_database, aux);
     printf("Add element at position...%d\n", idx);
 
     // list database
