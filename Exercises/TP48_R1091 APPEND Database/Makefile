@@ -6,7 +6,7 @@ all:
 	$(PROGS) 
 
 %: %.c 
-	$(CC) $(CFLAGS) -o $@.out $< 
+	$(CC) $(CFLAGS) -o $@.o $< 
 
 clean: 
 	rm -f $(PROGS) 
