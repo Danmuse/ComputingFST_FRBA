@@ -3,16 +3,14 @@
 #include <string.h>
 #define MAX_SIZE 50
 #define MAX_USERS 19
-#define STR_NAME 22
-#define STR_GENRE 12
 
 typedef struct {
 	int ID;
-	char name[STR_NAME];
-	char genre[STR_GENRE];
+	char *name;
+	char *genre;
 } USER_st;
 
-char *str_trim(char *);
+char* str_trim(char*);
 void print_users(USER_st *);
 
 int main(void) {
@@ -31,9 +29,10 @@ int main(void) {
 	// WARNING: '\n' character is included at the end of each .csv line!!
 	while (fgets(buffer, sizeof(buffer), fileSystem) != NULL) {
 		str_trim(buffer); // Delete '\n' at the end of the buffer string
-		printf("buffer = \"%s\"\n", buffer);
+		printf("\nbuffer = \"%s\"", buffer);
 		
-		/* It is not possible to reallocate a new memory space without linked lists TODO
+		/*
+		It is not possible to reallocate a new memory space without linked lists TODO
 		if (!users) { // Store memory...
 			users = (USER_st *) malloc(++users_max * sizeof(USER_st));
 			if (!users) exit(EXIT_FAILURE);
@@ -51,25 +50,27 @@ int main(void) {
 		// (users + index) -> genre = (token != NULL) ? token : '\0';
 		
 		token = strtok(buffer, ",");
-		if (token != NULL) {
-			(users + index) -> ID = atoi(token);
-			token = strtok(NULL, ",");
-		} else (users + index) -> ID = 0;
-		if (token != NULL) {
-			strcpy((users + index) -> name, token);
-			token = strtok(NULL, ",");
-		} else strcpy((users + index) -> name, "\0");
-		if (token != NULL) {
-			strcpy((users + index) -> genre, token);
-			token = strtok(NULL, ",");
-		} else strcpy((users + index) -> genre, "\0");
-		
+		if (strcmp(token, "ID") && token != NULL) (users + index) -> ID = atoi(token);
+		else continue;
+		token = strtok(NULL, ",");
+		(users + index) -> name = (char *) malloc((strlen(token) + 1) * sizeof(char));
+		if (token != NULL) strcpy((users + index) -> name, token);
+		else continue;
+		token = strtok(NULL, ",");
+		(users + index) -> genre = (char *) malloc((strlen(token) + 1) * sizeof(char));
+		if (token != NULL) strcpy((users + index) -> genre, token);
+		else continue;
+		print_users(users + index);
 		index++;
 	}
 	printf("=== END ===\n\n");
 	fclose(fileSystem);
 	printf("Se han generado las siguientes estructuras...\n");
-	for (index = 0; index < MAX_USERS; index++) print_users(users + index);
+	for (index = 0; index < MAX_USERS; index++) {
+		print_users(users + index);
+		free((users + index) -> name);
+		free((users + index) -> genre);
+	}
 	free(users);
 	return EXIT_SUCCESS;
 }
