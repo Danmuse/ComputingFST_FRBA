@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define NAME_MAX_LEN    100
+#define NAME_MAX_LEN 50
 
 typedef struct st_data {
     int id;
@@ -37,14 +37,13 @@ int main(void){
 //insert link at the first location (top)
 void insert_top(NODE **TOP, DATA *data) {
    //create a node
-   NODE n = (NODE) malloc(sizeof(NODE));
-   //NODE *n = malloc(sizeof(NODE));
+   NODE *n = (NODE *) malloc(sizeof(NODE));
 	
    // asign data
-   n->data = *data;
+   n -> data = *data;
 	
    //point it to old first node
-   n->next = *TOP;
+   n -> next = *TOP;
 	
    //point first to new first node
    *TOP = n;
@@ -53,11 +52,9 @@ void insert_top(NODE **TOP, DATA *data) {
 //display the list
 void print_list(NODE *ptr) {
    printf("[\n");
-	
    while(ptr != NULL) {
-      printf("\t(%d,%s,%c)\n",ptr->data.id,ptr->data.name, ptr->data.gender);
-      ptr = ptr->next;
+      printf("\t(%d,%s,%c)\n", ptr -> data.id, ptr -> data.name, ptr -> data.gender);
+      ptr = ptr -> next;
    }
-	
    printf("]\n");
 }
