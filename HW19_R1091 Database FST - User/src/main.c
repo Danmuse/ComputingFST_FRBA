@@ -7,50 +7,72 @@
  * Cuando el programa inicia carga la informacion desde el archivo.                                                           *
  * e) Modificar el programa anterior para que la base de datos este ordena siempre por ID.                                    *
  * Cuando se cargue un nuevo elemento se inserte ordenado                                                                     *
- * f) Modificar la funciona de buscar por ID para que sea eficiente con la premisa que la base de datos esta ordenada (fseek) *
+ * f) Modificar la funcion de buscar por ID para que sea eficiente con la premisa que la base de datos esta ordenada (fseek)  *
  * g) Implementar una funcion que modifica un registro por ID                                                                 *
  ******************************************************************************************************************************/
 
+// TODO: Chequear de que forma se guardan los strings en el nombre, y realizar una funcion de comparacion
+
+// Cargar usuarios
+// Imprimir usuarios
+// Buscar por nombre
+// Buscar por ID
+// Borrar y crear un nuevo registro
+
 // "<stdio.h>" "<stdlib.h>" "<string.h>" "<stdbool.h>" "USER_st" are included below...
 #include <userreg.h>
+#define MAX_USERS 100
 
 int main(void) {
 	size_t i;
 	USER_st *users;
 	FILE *fileSystem;
-	uint8_t max_users, response;
-	bool request_status = true, menu_status = true;
+	uint16_t max_users;
+	bool checkValidEntry;
 	
-	if (request_status) {
-		printf("Ingrese la cantidad de usuarios deseados: ");
-		scanf("%hhu", &max_users);
-		if (max_users < 255) {
-			request_status = false;
-			users = (USER_st *) malloc(max_users * sizeof(USER_st));
-			if (!users) exit(EXIT_FAILURE);
-		} else printf("Ha excedido la cantidad de usuarios... [255]\n");
-	}
-	
-	while (menu_status) {
-		for (i = 0; i < max_users; i++) {
-			(users + i) -> ID = (int) i;
-			printf("Ingrese los datos del usuario #%ld\n", i);
-			printf("- Nombre: ");
-			scanf("%s", (users + i) -> name);
-			printf("- Edad: ");
-			scanf("%d", &((users + i) -> age));
-			printf("- Altura: ");
-			scanf("%f", &((users + i) -> height));
-			printf("- Peso: ");
-			scanf("%f", &((users + i) -> weight));
-			response = writeFile(fileSystem, *(users + i));
-			if (!response) break;
+	if (checkEmptyFile(fileSystem)) {
+		while (!checkValidEntry) {
+			printf("Ingrese la cantidad de usuarios deseados: ");
+			checkValidEntry = scanf("%hhu", &max_users);
+			if (!checkValidEntry) {
+				printf("Cantidad de usuarios invalida\n");
+				while (getchar() != '\n');
+			} 
 		}
-		response = readFile(fileSystem, max_users);
-		menu_status = false;
+		checkValidEntry = false;
+		if (max_users < MAX_USERS) {
+			writeFile(fileSystem, users, max_users) ? 
+			printf("\nHa ocurrido un error al ingresar el usuario\n\n") :
+			printf("\nEl ingreso de usuarios ha sido exitoso\n\n");
+		} else {
+			printf("Ha excedido la cantidad de usuarios...\n");
+			printf("Solo se le permitira ingresar %d usuarios\n", MAX_USERS);
+			max_users = MAX_USERS;
+			writeFile(fileSystem, users, max_users) ? 
+			printf("\nHa ocurrido un error al ingresar el usuario\n\n") :
+			printf("\nEl ingreso de usuarios ha sido exitoso\n\n");
+		}
 	}
-	free(users);
-	return EXIT_SUCCESS;
+	
+	while (1) {
+		switch (chooseMenuOption()) {
+			case 0: 
+				if (!users) free(users);
+				return EXIT_SUCCESS;
+			break;
+			case 1:
+				
+			break;
+			case 2: 
+				
+			break;
+			case 3: 
+				
+			break;
+		}
+	}
+	if (!users) free(users);
+	return EXIT_FAILURE;
 }
 
 /*

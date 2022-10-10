@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#define STR_NAME 20
+#define STR_NAME 30
 
 typedef __UINT8_TYPE__ uint8_t;
+typedef __UINT16_TYPE__ uint16_t;
 
 typedef struct {
 	int ID;
@@ -17,8 +18,11 @@ typedef struct {
 	float weight;
 } USER_st;
 
-uint8_t writeFile(FILE *, USER_st);
-uint8_t readFile(FILE *, uint8_t);
+uint8_t chooseMenuOption(void);
+bool checkEmptyFile(FILE *);
+bool writeFile(FILE *, USER_st *, uint16_t);
+bool loadFile(FILE *, USER_st *);
+void clearBuffer(char *);
 
 /*
 
