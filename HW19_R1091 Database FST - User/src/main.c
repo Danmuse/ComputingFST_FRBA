@@ -11,8 +11,6 @@
  * g) Implementar una funcion que modifica un registro por ID                                                                 *
  ******************************************************************************************************************************/
 
-// TODO: Chequear de que forma se guardan los strings en el nombre, y realizar una funcion de comparacion
-
 // Cargar usuarios
 // Imprimir usuarios
 // Buscar por nombre
@@ -26,14 +24,14 @@
 int main(void) {
 	size_t i;
 	USER_st *users;
-	FILE *fileSystem;
+	FILE *fileStream;
 	uint16_t max_users;
 	bool checkValidEntry;
 	
-	if (checkEmptyFile(fileSystem)) {
+	if (checkEmptyFile(fileStream)) {
 		while (!checkValidEntry) {
 			printf("Ingrese la cantidad de usuarios deseados: ");
-			checkValidEntry = scanf("%hhu", &max_users);
+			checkValidEntry = scanf("%hu", &max_users);
 			if (!checkValidEntry) {
 				printf("Cantidad de usuarios invalida\n");
 				while (getchar() != '\n');
@@ -41,14 +39,14 @@ int main(void) {
 		}
 		checkValidEntry = false;
 		if (max_users < MAX_USERS) {
-			writeFile(fileSystem, users, max_users) ? 
+			writeFile(fileStream, users, max_users) ? 
 			printf("\nHa ocurrido un error al ingresar el usuario\n\n") :
 			printf("\nEl ingreso de usuarios ha sido exitoso\n\n");
 		} else {
 			printf("Ha excedido la cantidad de usuarios...\n");
 			printf("Solo se le permitira ingresar %d usuarios\n", MAX_USERS);
 			max_users = MAX_USERS;
-			writeFile(fileSystem, users, max_users) ? 
+			writeFile(fileStream, users, max_users) ? 
 			printf("\nHa ocurrido un error al ingresar el usuario\n\n") :
 			printf("\nEl ingreso de usuarios ha sido exitoso\n\n");
 		}
@@ -61,7 +59,7 @@ int main(void) {
 				return EXIT_SUCCESS;
 			break;
 			case 1:
-				
+				printUsers(fileStream, users);
 			break;
 			case 2: 
 				

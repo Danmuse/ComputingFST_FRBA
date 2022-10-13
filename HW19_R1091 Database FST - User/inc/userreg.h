@@ -22,6 +22,7 @@ uint8_t chooseMenuOption(void);
 bool checkEmptyFile(FILE *);
 bool writeFile(FILE *, USER_st *, uint16_t);
 bool loadFile(FILE *, USER_st *);
+void printUsers(FILE *, USER_st *);
 void clearBuffer(char *);
 
 /*

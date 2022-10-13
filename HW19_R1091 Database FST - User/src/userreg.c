@@ -5,7 +5,7 @@ uint8_t chooseMenuOption(void) {
 	bool checkValidEntry;
 	printf("Seleccione alguna opcion...\n");
 	printf("[0] - Finalizar\n");
-	printf("[1] - Cargar usuarios\n");
+	printf("[1] - Imprimir usuarios\n");
 	printf("[2] - \n");
 	printf("[3] - \n");
 	
@@ -23,33 +23,33 @@ uint8_t chooseMenuOption(void) {
 	return option;
 }
 
-bool checkEmptyFile(FILE *fileSystem) {
+bool checkEmptyFile(FILE *fileStream) {
 	long fileSize;
-	fileSystem = fopen("users.bin", "rb");
-	if (!fileSystem) {
+	fileStream = fopen("users.bin", "rb");
+	if (!fileStream) {
 		printf("El archivo al que se intenta acceder NO EXISTE\n");
 		printf("Se ha generado un nuevo archivo \"users.bin\"\n");
-		fileSystem = fopen("users.bin", "wb");
-		fseek(fileSystem, 0L, SEEK_END);
-		fileSize = ftell(fileSystem);
+		fileStream = fopen("users.bin", "wb");
+		fseek(fileStream, 0L, SEEK_END);
+		fileSize = ftell(fileStream);
 		printf("Tamano del archivo: %ld\n\n", fileSize);
-		fclose(fileSystem);
+		fclose(fileStream);
 		return EXIT_FAILURE;
 	} else {
 		printf("Se ha validado la existencia del archivo \"users.bin\"\n");
-		fseek(fileSystem, 0L, SEEK_END);
-		fileSize = ftell(fileSystem);
+		fseek(fileStream, 0L, SEEK_END);
+		fileSize = ftell(fileStream);
 		printf("Tamano del archivo: %ld\n\n", fileSize);
-		fclose(fileSystem);
+		fclose(fileStream);
 		return fileSize != 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 	}
 }
 
-bool writeFile(FILE *fileSystem, USER_st *users, uint16_t max_users) {
+bool writeFile(FILE *fileStream, USER_st *users, uint16_t max_users) {
 	size_t i, bytesWritten;
 	bool checkValidEntry;
 	users = (USER_st *) malloc(max_users * sizeof(USER_st));
-	fileSystem = fopen("users.bin", "wb");
+	fileStream = fopen("users.bin", "wb");
 	for (i = 0; i < max_users; i++) {
 		(users + i) -> ID = (int) i + 1;
 		printf("\nIngrese los datos del usuario #%d\n", (users + i) -> ID);
@@ -89,29 +89,38 @@ bool writeFile(FILE *fileSystem, USER_st *users, uint16_t max_users) {
 		}
 		checkValidEntry = false;
 		
-		bytesWritten = fwrite((users + i), sizeof(USER_st), 1, fileSystem);
+		bytesWritten = fwrite((users + i), sizeof(USER_st), 1, fileStream);
 		if (!bytesWritten) {
 			users = (USER_st *) realloc(users, i * sizeof(USER_st));
 			return EXIT_FAILURE;
 		}
 	}
-	fclose(fileSystem);
+	fclose(fileStream);
 	return EXIT_SUCCESS;
 }
 
-bool loadFile(FILE *fileSystem, USER_st *users) {
+bool loadFile(FILE *fileStream, USER_st *users) {
 	size_t i, bytesRead;
 	
-	fileSystem = fopen("users.bin", "rb");
-	for (i = 0; !feof(fileSystem); i++) {
+	fileStream = fopen("users.bin", "rb");
+	for (i = 0; !feof(fileStream); i++) {
 		users = (USER_st *) realloc(users, i * sizeof(USER_st));
-		fread((users + i), sizeof(USER_st), 1, fileSystem);
+		fread((users + i), sizeof(USER_st), 1, fileStream);
 	}
-	fclose(fileSystem);
+	fclose(fileStream);
 	return EXIT_SUCCESS;
 }
 
+void printUsers(FILE *fileStream, USER_st *users) {
+	// Preguntar por si los usuarios ya estan cargados, sino cargarlos debajo
+	// loadFile(fileStream, users);
+	if (users -> ID == 0) printf("No hay usuarios existentes\n");
+}
+
+void clearBuffer(char *buffer) { if (buffer[strlen(buffer - 1)] != '\n') while (getchar() != '\n'); }
+
 /*
+
 bool readFile(FILE *fileSystem, uint16_t max_users) {
 	size_t i;
 	uint8_t bytesRead;
@@ -122,13 +131,8 @@ bool readFile(FILE *fileSystem, uint16_t max_users) {
 	for (i = 0; i < max_users; i++) printf("#%d | %s | %d | %.2f | %.2f\n", user_aux[i].ID, user_aux[i].name, user_aux[i].age, user_aux[i].height, user_aux[i].weight);
 	return bytesRead;
 }
+
 */
-
-void clearBuffer(char *buffer) { if (buffer[strlen(buffer - 1)] != '\n') while (getchar() != '\n'); }
-
-// loadUsers
-
-// showContent
 
 /*
 
