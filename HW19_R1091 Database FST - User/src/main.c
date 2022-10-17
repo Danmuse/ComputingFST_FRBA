@@ -59,7 +59,7 @@ int main(void) {
 				return EXIT_SUCCESS;
 			break;
 			case 1:
-				printUsers(fileStream, users);
+				// printUsers(fileStream, users);
 			break;
 			case 2: 
 				

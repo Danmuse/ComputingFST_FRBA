@@ -54,9 +54,8 @@ bool writeFile(FILE *fileStream, USER_st *users, uint16_t max_users) {
 		(users + i) -> ID = (int) i + 1;
 		printf("\nIngrese los datos del usuario #%d\n", (users + i) -> ID);
 		
-		printf("- Nombre: ");	
-		clearBuffer((users + i) -> name);
-		fgets((users + i) -> name, sizeof((users + i) -> name), stdin);
+		printf("- Nombre: ");
+		insertString((users + i) -> name, sizeof((users + i) -> name));
 		// clearBuffer((users + i) -> name); // If you entried an unlimited string before
 		
 		while (!checkValidEntry) {
@@ -105,19 +104,39 @@ bool loadFile(FILE *fileStream, USER_st *users) {
 	fileStream = fopen("users.bin", "rb");
 	for (i = 0; !feof(fileStream); i++) {
 		users = (USER_st *) realloc(users, i * sizeof(USER_st));
-		fread((users + i), sizeof(USER_st), 1, fileStream);
+		bytesRead = fread((users + i), sizeof(USER_st), 1, fileStream);
+		if (!bytesRead) return EXIT_FAILURE;
 	}
 	fclose(fileStream);
 	return EXIT_SUCCESS;
 }
 
+/*
+
 void printUsers(FILE *fileStream, USER_st *users) {
+	size_t i;
+	bool loadFileStatus;
+	
 	// Preguntar por si los usuarios ya estan cargados, sino cargarlos debajo
-	// loadFile(fileStream, users);
-	if (users -> ID == 0) printf("No hay usuarios existentes\n");
+	// if (users -> ID == 0) printf("No hay usuarios existentes\n");
+	loadFileStatus = loadFile(fileStream, users);
+	if (loadFileStatus) {
+		for (i = 0, users[i] -> ID != 0, i++) {
+			printf("Usuario #%d | %s | %d | %.2f | %.2f\n", users[i].ID, users[i].name, users[i].age, users[i].height, users[i].weight);
+		}
+	}
+	else printf("\nHa ocurrido un error...\n");
 }
 
-void clearBuffer(char *buffer) { if (buffer[strlen(buffer - 1)] != '\n') while (getchar() != '\n'); }
+*/
+
+char* insertString(char *buffer, size_t size) { 
+	if (buffer[strlen(buffer - 1)] != '\n') while (getchar() != '\n'); 
+	fgets(buffer, size, stdin);
+	size = strlen(buffer);
+	buffer[size - 1] = '\0';
+	return buffer;
+}
 
 /*
 

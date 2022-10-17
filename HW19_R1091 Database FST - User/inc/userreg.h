@@ -23,7 +23,7 @@ bool checkEmptyFile(FILE *);
 bool writeFile(FILE *, USER_st *, uint16_t);
 bool loadFile(FILE *, USER_st *);
 void printUsers(FILE *, USER_st *);
-void clearBuffer(char *);
+char* insertString(char*, size_t);
 
 /*
 
