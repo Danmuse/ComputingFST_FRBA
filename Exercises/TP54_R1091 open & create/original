@@ -1,0 +1,6 @@
+Esto es una prueba
+fopen = open
+fclose = close
+fseek = lseek
+fwrite = write
+fread = read
