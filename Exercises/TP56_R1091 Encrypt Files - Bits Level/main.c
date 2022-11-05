@@ -45,10 +45,10 @@ int main(int argc, char* argv[]) {
     */
     
     FileDescriptor = open(argv[1], O_RDONLY);
-    response = lseek(FileDescriptor, 0, SEEK_END);
+    response = lseek(FileDescriptor, 0, SEEK_END); // Devuelve la cantidad de bytes que existen antes de su posicion
     lseek(FileDescriptor, 0, SEEK_SET);
     Buffer = (unsigned char*) malloc(response);
-    response = read(FileDescriptor, Buffer, response);
+    response = read(FileDescriptor, Buffer, response); // Devuelve la cantidad de bytes leidos, almacena los bytes en Buffer
     close(FileDescriptor);
     FileDescriptor = open("./crypto", O_RDWR | O_CREAT, 0666);
     write(FileDescriptor, NoExclusive_Convert(Buffer, response), response);
