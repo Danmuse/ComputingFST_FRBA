@@ -1,18 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define ARRAY_SIZE 7
 
-void swap(int*, int*);
+typedef unsigned short int uint8_t;
+typedef unsigned int uint16_t;
+
+void swap(uint8_t*, uint8_t*);
 int comp(int*, int*);
+void printArray(uint8_t[], size_t);
 
 int main(void) {
 	size_t i;
-	int* data = {7, 1, 3, 5, 2, 8, 10}
-	qsort(data, sizeof(int), sizeof(data) / sizeof(int), comp);
+	uint8_t data[ARRAY_SIZE] = {7, 1, 3, 5, 2, 8, 10}
+	qsort(data, sizeof(int), sizeof(data) / sizeof(uint8_t), comp);
 	for (i = 0; i < sizeof(data)/sizeof(int); i++) printf("data[%ld] = %d\n", i, data[i]);
-	return 0;
+	return EXIT_SUCCESS;
 }
 
-int arr_
+int 
 
 for (i = 0; i < (size -1); i++) {
 	for(j = i + 1; j < size; j++) {
