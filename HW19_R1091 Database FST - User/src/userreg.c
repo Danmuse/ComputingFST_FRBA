@@ -111,8 +111,6 @@ bool loadFile(FILE *fileStream, USER_st *users) {
 	return EXIT_SUCCESS;
 }
 
-/*
-
 void printUsers(FILE *fileStream, USER_st *users) {
 	size_t i;
 	bool loadFileStatus;
@@ -120,15 +118,12 @@ void printUsers(FILE *fileStream, USER_st *users) {
 	// Preguntar por si los usuarios ya estan cargados, sino cargarlos debajo
 	// if (users -> ID == 0) printf("No hay usuarios existentes\n");
 	loadFileStatus = loadFile(fileStream, users);
-	if (loadFileStatus) {
-		for (i = 0, users[i] -> ID != 0, i++) {
+	if (!loadFileStatus) {
+		for (i = 0; users[i].ID != 0; i++) {
 			printf("Usuario #%d | %s | %d | %.2f | %.2f\n", users[i].ID, users[i].name, users[i].age, users[i].height, users[i].weight);
 		}
-	}
-	else printf("\nHa ocurrido un error...\n");
+	} else printf("\nHa ocurrido un error...\n");
 }
-
-*/
 
 char* insertString(char *buffer, size_t size) { 
 	if (buffer[strlen(buffer - 1)] != '\n') while (getchar() != '\n'); 
