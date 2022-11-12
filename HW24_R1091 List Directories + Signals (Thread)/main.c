@@ -1,0 +1,93 @@
+/*******************************************************************************************************************************
+ Implementar un programa utilizando thread que liste un directorio, cuyo path se pasa por la linea de comandos, por cada archivo
+ encontrado, que se supone que son todos archivos de texto, se tendra que:
+ * Eliminar todos los espacios duplicados en cada archivo de texto
+ * Luego moverlo a un directorio en path/output. Este directorio podra o no existir. En caso de no existir se debera crear
+ * Al finalizar, mostrar por pantalla un resumen indicando:
+   * Cantidad de archivos movidos
+   * Cantidad de espacios duplicados eliminados por cada uno de los archivos
+   
+ Modificar el programa de manera que no finalice el thread principal, excepto con Ctrl+C. Cada vez que se agregue un archivo
+ nuevo al directorio, debera procesarse segun el ejercicio anterior. Analice la necesidad o no de que los threas sean 
+ joinabled o detached.
+ *******************************************************************************************************************************/
+ 
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
+
+#define THREAD_NUM 2
+#define BUFFER_MAX 10
+
+int buffer[BUFFER_MAX];
+int count = 0;
+pthread_mutex_t mutexBuffer;
+
+void *producer(void *args);
+void *consumer(void *args);
+
+int main(int argc, char *argv[]) {
+    int index;
+    pthread_t th[THREAD_NUM];
+
+    srand(time(NULL));
+
+    pthread_mutex_init(&mutexBuffer, NULL);
+
+    for (index = 0; index < THREAD_NUM; index++) {
+        if (index % 2 == 0) {
+            if (pthread_create(&th[index], NULL, &producer, NULL) != 0)
+                perror("Failed to create thread");
+        }
+        
+        else {
+            if (pthread_create(&th[index], NULL, &consumer, NULL) != 0)
+                perror("Failed to create thread");
+        }
+    }
+    
+    for (index = 0; index < THREAD_NUM; index++) {
+        if (pthread_join(th[index], NULL) != 0)
+            perror("Failed to join thread");
+    }
+    
+    pthread_mutex_destroy(&mutexBuffer);
+
+    return EXIT_SUCCESS;
+}
+
+void *producer(void *args) {
+    int x;
+    while (1) {
+        x = rand() % 100;
+
+        // Add to the buffer
+        pthread_mutex_lock(&mutexBuffer);
+        if (count < BUFFER_MAX) {
+            buffer[count] = x;
+            count++;
+        } // else printf("PRODUCER:: Skipped value\n");
+        pthread_mutex_unlock(&mutexBuffer);
+    }
+}
+
+void *consumer(void *args) {
+    int y;
+    while (1) {
+        y = -1;
+
+        // Remove from the buffer
+        pthread_mutex_lock(&mutexBuffer);
+        if (count > 0) {
+            y = buffer[count - 1];
+            count--;
+        }
+        pthread_mutex_unlock(&mutexBuffer);
+
+        // Consume
+        printf("Got %d\n", y);
+    }
+}
