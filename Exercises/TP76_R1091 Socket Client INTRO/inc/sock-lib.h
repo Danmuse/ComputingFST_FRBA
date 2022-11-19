@@ -10,11 +10,11 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define PORT 8010	/* El puerto donde se conectará, servidor */
-#define BACKLOG 10	/* Tamaño de la cola de conexiones recibidas */
+#define PORT 8010 // El puerto donde se conectará, servidor
+#define BACKLOG 10 // Tamaño de la cola de conexiones recibidas
 
-int	conectar (int, char **);
+int connecting(int, char **);
 
-int	Open_conection (struct sockaddr_in *); /* Función que crea la conexión*/
+int openConnection(struct sockaddr_in *); // Función que crea la conexión
 
-int	Aceptar_pedidos (int);	/* Función que acepta una conexión entrante*/
+int acceptRequest(int); // Función que acepta una conexión entrante

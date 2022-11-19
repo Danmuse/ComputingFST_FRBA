@@ -5,7 +5,7 @@ BIN_DIR = ../bin
 OBJ_DIR = ../obj
 SRC_DIR = .
 
-CFLAGS	= -Wall -I $(INC_DIR) 
+CFLAGS	= -Wall -I $(INC_DIR) -lm 
 TARGET	= $(BIN_DIR)/socket_client.out
 OBJS 	= $(OBJ_DIR)/client.o \
 	  $(OBJ_DIR)/sock-lib.o
