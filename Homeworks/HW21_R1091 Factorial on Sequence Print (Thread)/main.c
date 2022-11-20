@@ -14,7 +14,7 @@ void *calculateFactorial(void *);
 
 int main(int argc, char *argv[]) {
     int index, j_index;
-    int *factorial;
+    int *factorial; // Threads return this value
 
     pthread_t threadIds[MAX_THREADS]; // NOT HANDLED SEGMENTATION FAULT
     
@@ -26,10 +26,9 @@ int main(int argc, char *argv[]) {
             
     for (j_index = 1; j_index < argc; ++j_index) {
         pthread_join(threadIds[j_index - 1], (void **)&factorial);
-        printf("[Thread %lud] Factorial de %s es: %u\n",threadIds[j_index - 1], argv[j_index], *factorial);
+        printf("[Thread %lud] Factorial de %s es: %u\n", threadIds[j_index - 1], argv[j_index], *factorial);
     }
 }
-
 
 void *calculateFactorial(void *arg) {
     int index;
