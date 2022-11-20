@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     pthread_t threadIds[MAXTHREADS]; // NOT HANDLED SEGMENTATION FAULT
 
     if (argc > 1) {
-   	 for (index = 0; index < atoi(argv[1]); ++index) {//NOT HANDLED EXCEPTION
+   	 for (index = 0; index < atoi(argv[1]); ++index) { // NOT HANDLED EXCEPTION
    	     currPow = malloc(sizeof(int));
     	     *currPow = index;
     	     if (pthread_create(&threadIds[index], NULL, calculatePowerOf2, (void *)currPow) != 0)
