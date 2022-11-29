@@ -7,8 +7,8 @@ SRC_DIR = .
 
 CFLAGS	= -Wall -pedantic -I $(INC_DIR)
 TARGET	= $(BIN_DIR)/result.out
-OBJS 	= $(OBJ_DIR)/main.o
-	  # $(OBJ_DIR)/sock-lib.o \
+OBJS 	= $(OBJ_DIR)/main.o \
+	  $(OBJ_DIR)/sock-lib.o
 	  # $(OBJ_DIR)/book_list.o \
 	  # $(OBJ_DIR)/sys_num.o
 

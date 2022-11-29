@@ -15,6 +15,16 @@ void FreeNode(NODE_st* node) {
 	free(node);
 }
 
+void FreeList(LIST_st* list) {
+	NODE_st *ptr = list -> header, *ptr_aux;
+	while (ptr != NULL) {
+		ptr_aux = ptr;
+		ptr = ptr -> next;
+		FreeNode(ptr_aux);
+		list -> lenght--;
+	}
+}
+
 void InsertTop(LIST_st* list, autopart_st* part) {
 	NODE_st* node = CreateNode(part);
 	node -> next = list -> header;
@@ -24,10 +34,10 @@ void InsertTop(LIST_st* list, autopart_st* part) {
 
 void InsertAfter(int n, LIST_st* list, autopart_st* part) {
 	NODE_st* node = CreateNode(part);
-	if (list -> header == NULL) list -> header = node;
+	if (EmptyStatus(list)) list -> header = node;
 	else {
-		NODE_st* ptr = list -> header;
 		int position = 0;
+		NODE_st* ptr = list -> header;
 		while (position < n && ptr -> next) {
 			ptr = ptr -> next;
 			position++;
@@ -39,10 +49,10 @@ void InsertAfter(int n, LIST_st* list, autopart_st* part) {
 }
 
 autopart_st* GetPart(int partnumber, LIST_st* list) {
-	if (list -> header == NULL) return NULL;
+	if (EmptyStatus(list)) return NULL;
 	else {
-		NODE_st* ptr = list -> header;
 		int position = 0;
+		NODE_st* ptr = list -> header;
 		while (list -> header && ptr -> next) {
 			ptr = ptr -> next;
 			position++;
@@ -53,10 +63,10 @@ autopart_st* GetPart(int partnumber, LIST_st* list) {
 
 int Order(int partnumber, int discount, LIST_st* list) {
 	// The product doesn't exist
-	if (list -> header == NULL) return 0;
+	if (EmptyStatus(list)) return -1;
 	else {
-		NODE_st* ptr = list -> header;
 		int position = 0;
+		NODE_st* ptr = list -> header;
 		while (list -> header && ptr -> next) {
 			ptr = ptr -> next;
 			position++;
@@ -71,6 +81,19 @@ int Order(int partnumber, int discount, LIST_st* list) {
 			}
 		// The part number entered doesn't exist
 		} else return -1;
+	}
+}
+
+void showList(LIST_st list) {
+	NODE_st* ptr = list.header;
+	// fprintf(stdout, "\nHeader Pointer: %p", ptr);
+	while (ptr != NULL) {
+		fprintf(stdout, "\nP/N: %d", ptr -> autopart.number);
+		fprintf(stdout, "\nPart Name: %s", ptr -> autopart.name);
+		fprintf(stdout, "\nPart Quantity: %d", ptr -> autopart.amount);
+		fprintf(stdout, "\nPart Price: %.2f\n", ptr -> autopart.price);
+		ptr = ptr -> next;
+		// fprintf(stdout, "\nNext Pointer: %p\n", ptr);
 	}
 }
 

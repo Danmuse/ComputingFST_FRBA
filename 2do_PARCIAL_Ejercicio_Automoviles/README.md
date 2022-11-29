@@ -1,6 +1,6 @@
 Se desea crear dos aplicaciones, una cliente y otra servidor:
 
-##Servidor:
+## Servidor:
 **a.** Crear una base de datos de partes de automoviles que incluyen:
 - *part number* (integer)
 - *part name* (string max = 100)
@@ -23,7 +23,7 @@ Las mismas se consultaran por sockets desde los clientes.
 **d.** Mediante alguna señal (la puede elegir usted), al recibirla, el servidor guardara la lista
 que tiene en memoria en un archivo csv.
 
-##Cliente:
+## Cliente:
 **a.** Podrá ejecutar las API's por sockets al servidor, imprimiendo por pantalla el resultado.
 
 Todos los datos no provistos en el enunciado, serán elegidos por el desarrollador.

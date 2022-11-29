@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 

@@ -12,9 +12,9 @@ typedef struct {
 	float price;
 } autopart_st;
 
-typedef struct {
+typedef struct node_st {
 	autopart_st autopart;
-	struct NODE_st* next;
+	struct node_st* next;
 } NODE_st;
 
 typedef struct {
@@ -26,11 +26,17 @@ NODE_st* CreateNode(autopart_st*);
 
 void FreeNode(NODE_st*);
 
+void FreeList(LIST_st*);
+
 void InsertTop(LIST_st*, autopart_st*);
 
 void InsertAfter(int, LIST_st*, autopart_st*);
 
 autopart_st* GetPart(int, LIST_st*);
+
+int Order(int, int, LIST_st*);
+
+void showList(LIST_st);
 
 int ListLenght(LIST_st*);
 

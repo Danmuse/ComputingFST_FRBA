@@ -85,6 +85,12 @@ int openConnection(struct sockaddr_in * my_addr) {
 	my_addr->sin_addr.s_addr = INADDR_ANY;	// Automaticamente usa la IP local
 	bzero(&(my_addr->sin_zero), 8);		// Rellena con ceros el resto de la estructura
 
+	int optval = 1;
+    	if (setsockopt(sockaux, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
+           perror("reuse failed");
+           exit(1);
+        }
+
 // Con la estructura sockaddr_in completa, se declara en el Sistema que este proceso escuchará pedidos por la IP y el port definidos
 	if ((aux = bind(sockaux, (struct sockaddr *) my_addr, sizeof(struct sockaddr))) == -1) {
 		fprintf(stderr, "Error en función bind. Código de error %s\n", strerror(aux));
@@ -101,8 +107,8 @@ int openConnection(struct sockaddr_in * my_addr) {
 /*
  * int acceptRequest(int sockfd) 
  * \brief Una vez recibido el pedido de conexión, esta función establece la conexión con el extremo remoto.
- * \details Cuando se recibe el pedido de conexión desde el extremo remoto al que se espera en segundo plano mediante la función listen (), 
- * se recibe de dicha función el avviso para llamar a accept (). Ests función tiene  por objeto completar la conexión. Durante ese lapso se 
+ * \details Cuando se recibe el pedido de conexión desde el extremo remoto al que se espera en segundo plano mediante la función listen(), 
+ * se recibe de dicha función el avviso para llamar a accept(). Ests función tiene  por objeto completar la conexión. Durante ese lapso se 
  * ejecuta con el cliente reomoto un intercambio de paquetes de control que permiten establecer la conexión de manera confiable y segura.
  * El procecso estará en estado Sleeped hasta que termine esta actividad. Al terminar la función devolverá un  duplicado del socket para 
  * ser utilizado en el intercambio de información con el extremo remoto, mientras si se lo desea, al mismmo tiempo se vuelva a escuchar 
@@ -120,11 +126,11 @@ int acceptRequest(int sockfd) {
 
 // Se espera por conexiones
 	if ((newfd = accept(sockfd, (struct sockaddr *)&their_addr, &sin_size)) == -1) {
-		fprintf(stderr, "Error en función accept. Código de error %s\n", strerror(newfd));
+		fprintf(stderr, "ERROR:: Error en función accept. Código de error %s\n", strerror(newfd));
 		return -1;
 	}
 	else {
-		printf("Server::Conexión desde:  %s\n", inet_ntoa(their_addr.sin_addr));
+		printf("Server:: Conexión desde:  %s\n", inet_ntoa(their_addr.sin_addr));
 		return newfd;
 	}
 }
