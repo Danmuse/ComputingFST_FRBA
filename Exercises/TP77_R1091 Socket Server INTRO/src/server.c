@@ -16,7 +16,7 @@ int main(void) {
 // Aca se pone un fork() y se lo convierte en un server concurrente
 // En tal caso, lo que sigue es el child process
 // El padre vuelve a Aceptar_pedidos
-		if (write(sockdup, message , sizeof(message)) == -1) {
+		if (write(sockdup, message, sizeof(message)) == -1) {
 			perror("Error escribiendo mensaje en socket");
 			exit (1);
 		}
